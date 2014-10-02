@@ -1,5 +1,0 @@
-assets/js/vendor/**
-node_modules/**
-build/assets/js/vendor/**
-dist/assets/js/vendor/**
-test/coverage/**

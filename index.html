@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
+<html>
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
+    <title>merkelometer.de - Gemeinsam der Regierung auf die Finger geschaut</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -20,53 +15,62 @@
     <style>
     	body {
 	    	padding: 0;
-			background-color: rgba(13,148,193,1); 
     	}
-    	.top {
-	    	width=100%; 
-	    	background-color: black; 
+    	.top, .footer {
+	    	width: 100%; 
+	    	background-color: rgba(13,148,193,1); 
 	    	color: white; 
 	    	padding: 0.5em;
     	}
-    	.logo {
-	    	 width=100%; 
-	    	 text-align: center; 
-	    	 padding: 2em;
-    	}
+
+        .top {
+            background-color: rgba(13,148,193,1); 
+            text-align: center; 
+            padding: 30px;
+        }
+
+        .footer {
+            padding-top: 40px;
+        }
+
+        .top div {
+            vertical-align: middle; 
+            display: inline-block;
+            font-weight: bold; 
+            font-size: 1.2em;
+        }
     	
         .row {
             margin-bottom: 5em;
         }
        
-        
         h1, h2.entry-title {
-	        color: rgba(0,0,0,0.62);	        
+	        color: rgba(13,148,193,1);	        
         }
-        a, blockquote footer {
+        blockquote footer {
 	        color: #1c4d81;
+        }
+
+        a {
+            text-decoration: underline;
         }
         
         blockquote {
-	        border-color: rgba(255,255,255,0.29);        
+	        border-color: rgba(13,148,193,0.1);
 	    }
 	    
         .hint {
-	        border-left: 1px dotted white;
-	        border-top: 1px dotted white;
 	        padding-top: 0.5em;
 	        padding-left: 0.5em;
 	        vertical-align: middle;
 	        min-height: 50px;
 	        
-	        color: rgba(252,255,255,0.47);
+	        color: rgba(13,148,193,1);
             margin-top: 5em;
         }
-        .glyphicon {
-	        color: #374D74;
-        }
         .number {
-	        background-color: white;
-	        color: rgba(141,180,193,1);
+	        background-color: rgba(13,148,193,1);
+	        color: white;
 	        
 	        width: 30px;
 	        height: 30px;
@@ -79,58 +83,76 @@
 	        
 	        margin: 5px;
         }
-        
-        .placeholder {
-	        width: 70%; 
-	        height: 300px; 
-	        border: 1px solid grey; 
-	        margin-left: auto; 
-	        margin-right: auto;	        
+        .tab {
+            display: none;
         }
     </style>
-    <script src="assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
 
-<body ng-app="einJahrGroKo" ng-controller="MainCtrl">
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+<body>
 
-	<div class="top">
-	<strong style="font-size: 1.25em; padding-right: 2em">merkel-o-meter</strong>Gemeinsam der Regierung auf die Finger geschaut
-	</div>
-		
-    <div class="logo">
-    <img src="assets/img/merkelometer.png" width="508" height="107">
+    <div class="top" style="">
+        <div> 
+            <img src="assets/img/merkelometer.png" width="508" height="107">
+        </div>
+        <div style="padding: 1em;">
+            Gemeinsam der Regierung auf die Finger geschaut
+        </div>
     </div>
-    
+    <div style="padding-top: 70px; background:url(
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAKElEQVQIW2NkQAKXP//5r8vLwggTAvFROOiSID5YATadMMWM+CRBmgEiIR/Gxr3vjAAAAABJRU5ErkJggg==
+   ) repeat;">
     <div class="container">
-
+        <div class="row">
+            <div class="col-sm-6">                
+                <p class="lead"><span class="glyphicon glyphicon-search" style="color: rgba(13,148,193,1)"></span> Hilf uns mit einem kleinen bisschen Googlen bei der Recherche zu einem Wahlversprechen.                
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <p class="lead"><span class="glyphicon glyphicon-stats" style="color: rgba(13,148,193,1)"></span> Und dank Deiner Hilfe können wir Dir zeigen, wieviele ihrer Vorhaben die Bundesregierung bereits umgesetzt hat. </p>
+                <a href="#stats">Nein danke, zeig mir einfach die Statistiken.</a>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="container">
         <div class="row">
             <div class="col-sm-3">
             <div class="hint">
             	<div class="number">1</div>
-            	Bevor wir Dir zeigen, wieviele ihrer Vorhaben die Große Koalition schon umgesetzt hat, hilf uns doch bitte bei der Bewertung eines zufälligen Wahlversprechens.
-            	<br/><br/>
-				<a href="#stats">Nein danke, zeig mir einfach die Statistiken.</a>
+            	Hier ist ein zufälliges Wahlversprechen. Wenn Du ein anderes recherchieren willst, klicke den <span class="glyphicon glyphicon-refresh"></span>&nbsp;Button.
             </div>
             </div>
             <div class="col-sm-9">
             <!-- quote -->
-            <ejg-quote></ejg-quote>
+            <div>
+                <h2 id="entry-title" class="entry-title">&nbsp;</h2>
+                <blockquote class="entry-quote" style="margin-bottom: 0px; padding-bottom: 0px;">
+                    <div  id="entry-quote"> Wird geladen ... </div>
+                    <footer>
+                        <!-- source -->                        
+                        <span>
+                            <cite id="entry-source"></cite>
+                        </span>
+                        <p class="pull-right"><a class="btn btn-link" href="#" id="reload" role="button"><span class="glyphicon glyphicon-refresh"></span></a>
+                    </footer>
+                </blockquote>
+            </div>
+
+            <br style="clear: both;">
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-3">
-	            <div class="hint" style="margin-top: 0.5em;">
+	            <div class="hint" style="margin-top: 0em; padding-top: 0em;">
 	            	<div class="number">2</div>
 	            	Bitte google doch einmal danach.
 	            </div> 
             </div>
             <div class="col-sm-9">
-             <form class="input-group" action="" method="get" style="width: 80%; margin-left: auto; margin-right: auto;">
-              <input type="text" name="query" class="form-control">
+             <form class="input-group" action="http://www.google.de/search" method="get" style="width: 80%; margin-left: auto; margin-right: auto;" target="_blank">
+              <input type="text" name="q" class="form-control">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
               </span>
@@ -138,23 +160,20 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-sm-3">
             <div class="hint">
             	<div class="number">3</div>
-            	Wenn Du etwas zu diesem Wahlversprechen gefunden hast, dann poste doch bitte einen Link in den Kommentaren. Sag uns ggf auch, ob Du das Wahlversprechen für gehalten oder gebrochen hältst, oder ob ein Kompromiss umgesetzt wurde.
+            	Wenn Du etwas zu diesem Wahlversprechen gefunden hast, dann poste doch bitte einen Link in den Kommentaren. Sag uns ggf auch, ob Du das Wahlversprechen für gehalten oder gebrochen hältst, oder ob ein Kompromiss umgesetzt wurde. <br/>
+                <a href="#stats">Dann geht's hier lang zu den Statistiken.</a>
             </div> 
             </div>
             <div class="col-sm-9">
-
-                <div class="placeholder">
-                <em>Disqus Kommentare</em>
-                </div>
+                <div id="disqus_thread"></div>
             </div>
         </div>
         <div class="row" style="text-align: center;">
-            <h1>Danke!</h1>
+            <h1><span class="glyphicon glyphicon-gift"></span>&nbsp;Danke!</h1>
         </div>
 
         <div class="row" id="stats">
@@ -163,33 +182,31 @@
             <div class="number">4</div>
             Und hier die Statistiken, die Du eigentlich sehen wolltest.</div> 
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9" style="text-align: center;">
 
-                <div class="placeholder">
-                <em>Charts</em>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default active" href="#status" role="tab" data-toggle="tab">Nach Bewertung</button>
+                  <button type="button" class="btn btn-default" href="#ressort" role="tab" data-toggle="tab">Nach Ressort</button>
+                  <button type="button" class="btn btn-default" href="#zeit" role="tab" data-toggle="tab">Im Zeitverlauf</button>
+                </div>
+      
+                <div class="tab-content">
+                <div class="tab" id="status" style="width: 100%; height: 400px"></div>
+                <div class="tab" id="ressort" style="width: 100%; height: 400px">Ressort</div>
+                <div class="tab" id="zeit" style="width: 100%; height: 400px">Zeit</div>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div class="container">
-        <hr>
+    <div class="footer">
         <footer>
-            <p>Ein <a href="http://www.wahlversprechen2013.de">wahlversprechen2013.de</a> Projekt.</p>
+            <p>Ein <a href="http://www.wahlversprechen2013.de" style="color: white; text-decoration: underline;">wahlversprechen2013.de</a> Projekt.</p>
         </footer>
     </div>
     <!-- /container -->
-    <script src="assets/js/vendor/angular.min.js"></script>
-    <script src="assets/js/vendor/ui-bootstrap-tpls-0.11.0.min.js"></script>
-    <script src="assets/js/vendor/marked.js"></script>
+     <script data-main="assets/js/main" src="assets/js/require.js"></script>
 
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/constants.js"></script>
-    <script src="assets/js/controllers.js"></script>
-    <script src="assets/js/directives.js"></script>
-    <script src="assets/js/filters.js"></script>
-    <script src="assets/js/services.js"></script>
 </body>
 
 </html>
