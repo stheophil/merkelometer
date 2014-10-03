@@ -95,6 +95,7 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 					var tab = $(id);
 					if(element.hasClass("active")) {
 						tab.show();
+						$(window).resize();
 					} else {
 						tab.hide();
 					}
@@ -111,7 +112,9 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 					var tabcontent = tab.parents(".tab-content");
 
 					tabcontent.children("[id!='"+id.substr(1)+"']").hide();
-					tabcontent.children(id).show();
+					var visible = tabcontent.children(id);
+					visible.show();
+					$(window).resize();
 				});
 			}
 
@@ -131,8 +134,14 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 					ratingZero[r.value] = 0;
 				});
 
+				// map rating.value -> int	
 				var ratingCounts = $.extend(true, {}, ratingZero);
+
+				// map category.name -> rating.value -> int
 				var ratingCountsPerCategory = {};
+
+				// changes in total ratings with date
+				var ratingDiff = [];
 		
 				stmts.forEach( function(stmt) {
 					if(ratingCountsPerCategory[stmt.category]===undefined) {
@@ -153,7 +162,46 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 					} else {
 						ratingPerCategory[rating]++;
 					}
+
+					for(var i=0; i<stmt.ratings.length; i++) {
+						var prev = i===0 ? idxUndefined : stmt.ratings[i-1];
+						var current = stmt.ratings[i].rating;
+						if(prev!==current) {
+							var date = new Date(stmt.ratings[i].date);
+							ratingDiff.push( {
+								prev: i===0 ? idxUndefined : stmt.ratings[i-1],
+								current: stmt.ratings[i].rating,
+								date: new Date(date.getFullYear(), date.getMonth(), date.getDay())
+							} );	
+						}
+					}
 				});
+
+				ratingDiff.sort(function(lhs, rhs) {
+					if(lhs.date < rhs.date) return -1;
+					if(rhs.date < lhs.date) return 1;
+					return 0;
+				});
+
+				var initialRatings = $.extend(true, {}, ratingZero);
+				initialRatings[idxUndefined] = stmts.length;
+				initialRatings.date = ratingDiff[0].date;
+
+				var ratingsOverTime = [ initialRatings ];
+				for(var i=0; i<ratingDiff.length; i++) {
+					var ratingLast = ratingsOverTime[ratingsOverTime.length-1];
+
+					var ratingNew;
+					if(ratingLast.date.getTime() !== ratingDiff[i].date.getTime()) {
+						ratingNew = $.extend(true, {}, ratingLast);
+						ratingsOverTime.push(ratingNew);
+					} else {
+						ratingNew = ratingLast; // overwrite
+					}
+					ratingNew.date = ratingDiff[i].date;
+					ratingNew[ratingDiff[i].prev]--;
+					ratingNew[ratingDiff[i].current]++;
+				}
 
 				var style = {
 					fontFamily: '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif', // default font
@@ -224,7 +272,12 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 					$('#ressort').highcharts({
 				        chart: {
 				            type: 'bar',
-				            style: style
+				            style: style,
+			                events: {
+			                  load: function() {
+			                    $(window).resize();
+			                  }
+			                }
 				        },
 				        plotOptions: {
 				        	bar: {
@@ -254,6 +307,59 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				        	}),
 				        legend: { 
 				        	enabled: false
+				        }
+				    });
+				}
+				{
+					var series = ratings.map(function(r) { 
+				        	return {
+				        		name: r.name,
+				        		data: ratingsOverTime.map( function(t) {
+				        			return [t.date.getTime(), t[r.value]];
+				        		})
+				        	}; 
+				        });
+					$('#zeit').highcharts({
+				        chart: {
+				            type: 'area',
+				            style: style,
+			                events: {
+			                  load: function() {
+			                    $(window).resize();
+			                  }
+			                }
+				        },
+				        plotOptions: {
+				        	area: {
+				        		stacking: "normal"
+							},
+				            series: {
+				                marker: {
+				                    enabled: false
+				                }
+				            }
+				        },
+				        colors: ratings.map(function(r) { return r.color; }),
+				        title: {
+				            text: 'Bewertung der Wahlversprechen über die Zeit'
+				        },
+				        xAxis: {
+            				type: 'datetime'
+            			},
+				        yAxis: {
+				        	title: "Anzahl",
+				            gridLineColor: null
+				        },
+				        series: ratings.map(function(r) { 
+				        	return {
+				        		name: r.name,
+				        		data: ratingsOverTime.map( function(t) {
+				        			return [t.date.getTime(), t[r.value]];
+				        		})
+				        	}; 
+				        }),
+				        legend: { 
+				        	enabled: true
 				        }
 				    });
 				}
