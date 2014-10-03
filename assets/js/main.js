@@ -25,8 +25,13 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 	$(window).resize(layout);
 */
 
-	$.ajax({url: 'http://www.wahlversprechen2013.de/json/items/Koalitionsvertrag'}).done(
-		function(stmts) {	
+	var deferredStmts = $.ajax({url: 'http://www.wahlversprechen2013.de/json/items/Koalitionsvertrag'});
+	var deferredCategories = $.ajax({url: 'http://www.wahlversprechen2013.de/json/categories'});
+	$.when(deferredStmts, deferredCategories).done(
+		function(stmtsResult, categoriesResult) {
+			var stmts = stmtsResult[0];
+			var categories = categoriesResult[0];
+
 		    function display(index) {
 		    	var stmt = stmts[index];
 				console.log("Display quote " + stmt);
@@ -111,7 +116,6 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 			}
 
 			function setupCharts() {
-
 				var ratings = [
 					{ value: "PromiseKept", name: "Gehalten", glyph: "glyphicon-thumbs-up", color: "#5cb85c" },
 					{ value: "Compromise", name: "Kompromiss", glyph: "glyphicon-adjust", color: "#f0ad4e"  }, 
@@ -122,24 +126,44 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				];
 				var idxUndefined = "Unrated";
 
-				var ratingCounts = {};
+				var ratingZero = {};
 				ratings.forEach(function(r) {
-					ratingCounts[r.value] = 0;
+					ratingZero[r.value] = 0;
 				});
+
+				var ratingCounts = $.extend(true, {}, ratingZero);
+				var ratingCountsPerCategory = {};
 		
 				stmts.forEach( function(stmt) {
-					if(stmt.ratings.length===0) {
-						ratingCounts[idxUndefined]++;
+					if(ratingCountsPerCategory[stmt.category]===undefined) {
+						ratingCountsPerCategory[stmt.category] = $.extend(true, {}, ratingZero);
+					}
+
+					var rating = stmt.ratings.length===0 ? idxUndefined : stmt.ratings[stmt.ratings.length-1].rating
+					if(ratingCounts[rating]===undefined) {
+						ratingCounts[rating] = 1;
 					} else {
-						ratingCounts[stmt.ratings[stmt.ratings.length-1].rating]++;
+						ratingCounts[rating]++;
+					}
+
+					var ratingPerCategory = ratingCountsPerCategory[stmt.category];
+
+					if(ratingPerCategory[rating]===undefined) {
+						ratingPerCategory[rating] = 1;
+					} else {
+						ratingPerCategory[rating]++;
 					}
 				});
+
 				var style = {
 					fontFamily: '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif', // default font
 					fontSize: '14px',
 					fontWeight: 'bold'
 				};
 
+				var categoriesFiltered = categories.filter( function(c) {
+					return ratingCountsPerCategory[c.name] != undefined;
+				});
 				{
 					$('#status').highcharts({
 				        chart: {
@@ -191,6 +215,43 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				        			};
 				        	})
 				        }],
+				        legend: { 
+				        	enabled: false
+				        }
+				    });
+				}
+				{
+					$('#ressort').highcharts({
+				        chart: {
+				            type: 'bar',
+				            style: style
+				        },
+				        plotOptions: {
+				        	bar: {
+				        		stacking: "normal"
+				        	}
+				        },
+				        colors: ratings.map(function(r) { return r.color; }),
+				        title: {
+				            text: 'Bewertung der Wahlversprechen nach Ressorts'
+				        },
+				        xAxis: {
+				            categories: categoriesFiltered.map(function(c) { return c.name; })
+				        },
+				        yAxis: {
+				            title: {
+				                text: 'Anzahl der Wahlversprechen'
+				            },
+				            gridLineColor: null
+				        },
+				        series: ratings.map(function(r) { 
+				        	return {
+				        		name: r.name,
+				        		data: categoriesFiltered.map( function(c) {
+				        				return ratingCountsPerCategory[c.name][r.value];
+				        			})
+				        		}; 
+				        	}),
 				        legend: { 
 				        	enabled: false
 				        }
