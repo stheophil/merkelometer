@@ -120,12 +120,12 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 
 			function setupCharts() {
 				var ratings = [
-					{ value: "PromiseKept", name: "Gehalten", glyph: "glyphicon-thumbs-up", color: "#5cb85c" },
-					{ value: "Compromise", name: "Kompromiss", glyph: "glyphicon-adjust", color: "#f0ad4e"  }, 
-					{ value: "PromiseBroken", name: "Gebrochen", glyph: "glyphicon-thumbs-down", color: "#d9534f" }, 
-					{ value: "Stalled", name: "Blockiert", glyph: "glyphicon-time", color: "#d9984f"  },
-					{ value: "InTheWorks", name: "In Arbeit", glyph: "glyphicon-cog", color: "#5bc0de"  },
-					{ value: "Unrated", name: "Unbewertet", glyph: "glyphicon-question-sign", color: "#aaaaaa"  }
+					{ value: "PromiseKept", id: 0, name: "Gehalten", glyph: "glyphicon-thumbs-up", color: "#5cb85c" },
+					{ value: "Compromise", id: 1, name: "Kompromiss", glyph: "glyphicon-adjust", color: "#f0ad4e"  }, 
+					{ value: "PromiseBroken", id: 2, name: "Gebrochen", glyph: "glyphicon-thumbs-down", color: "#d9534f" }, 
+					{ value: "Stalled", id: 3, name: "Blockiert", glyph: "glyphicon-time", color: "#d9984f"  },
+					{ value: "InTheWorks", id: 4, name: "In Arbeit", glyph: "glyphicon-cog", color: "#5bc0de"  },
+					{ value: "Unrated", id: 5, name: "Unbewertet", glyph: "glyphicon-question-sign", color: "#aaaaaa"  }
 				];
 				var idxUndefined = "Unrated";
 
@@ -225,7 +225,7 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				        			enabled: true,
 				        			formatter: function() {
 				        				var p = this.point;
-				        				return "<span style='color: "+p.color + "'>"+ this.y +"</span>";
+				        				return "<a href='http://www.wahlversprechen2013.de/rating/"+p.id+"' target='_blank' class='chart'><span style='color: "+p.color + "'>"+ this.y +"</span></a>";
 				        			},
 				        			useHTML: true,
 				        			style: style
@@ -241,7 +241,7 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				            labels: {
 				            	formatter: function() {
 				            		var rating = this.value;
-				            		return "<span style='color: "+rating.color + "'><span class='glyphicon " + rating.glyph + "'></span>&nbsp;"+rating.name+"</span>";
+				            		return "<a href='http://www.wahlversprechen2013.de/rating/"+rating.id+"' target='_blank' class='chart'><span style='color: "+rating.color + "'><span class='glyphicon " + rating.glyph + "'></span>&nbsp;"+rating.name+"</span></a>";
 				            	},
 				            	useHTML: true,
 				            	style: style
@@ -259,6 +259,7 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				        		return {
 				        				name: r.name,
 				        				color: r.color,
+				        				id: r.id,
 				        				y: ratingCounts[r.value]
 				        			};
 				        	})
@@ -289,7 +290,17 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				            text: 'Bewertung der Wahlversprechen nach Ressorts'
 				        },
 				        xAxis: {
-				            categories: categoriesFiltered.map(function(c) { return c.name; })
+				            categories: categoriesFiltered.map(function(c) { return c.name; }),
+				            labels: {
+				            	formatter: function() {
+				            		var category = this.value;
+				            		return "<a href='http://www.wahlversprechen2013.de/category/"+category+"' target='_blank' class='chart'>"+category+"</a>";
+				            	},
+				            	useHTML: true,
+				            	style: {
+									textAlign: 'right'									
+								}
+				            }
 				        },
 				        yAxis: {
 				            title: {
@@ -351,11 +362,16 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				            gridLineColor: null
 				        },
 				        series: ratings.map(function(r) { 
+				        	var visible = true;
+				        	if(r.value === idxUndefined) {
+				        		visible = false;
+				        	}
 				        	return {
 				        		name: r.name,
 				        		data: ratingsOverTime.map( function(t) {
 				        			return [t.date.getTime(), t[r.value]];
-				        		})
+				        		}),
+				        		visible: visible
 				        	}; 
 				        }),
 				        legend: { 
