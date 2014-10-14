@@ -9,7 +9,7 @@ require.config({
     }
 });
 
-require(["jquery", "marked", "highcharts"], function($, marked) {
+require(["jquery", "marked", "mustache", "text!highscoreTemplate.html", "highcharts"], function($, marked, mustache, highscoreTemplate) {
 /*
 	function layout() {
 		console.log( "window: " + $( window ).width() + " x " + $( window ).height());
@@ -69,6 +69,21 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				} else {
 					display(r[1]);
 				}
+			}
+
+			function setupHighscoreList() {
+				$.ajax({url: 'https://api.myjson.com/bins/4g8e1'}).done( 
+					function(response) {
+						var element = $("#highscore");
+						var filteredNames = ["scripteddemocracy", "wahlversprechen2013", "sebastian_wahlversprechen", "wanja_seifert", "wanjaseifert"];
+						$(mustache.render(
+							highscoreTemplate, 
+							{
+								commenters: response.response.filter(function(user) {
+									return filteredNames.indexOf(user.username)===-1;
+								})
+						})).appendTo(element);
+					});
 			}
 
 			function setupButtonHandler() {
@@ -383,6 +398,7 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 
 			$(document).ready(function() {
 				setupButtonHandler();
+				setupHighscoreList();
 				setupTabs();
 				setupCharts();
 
