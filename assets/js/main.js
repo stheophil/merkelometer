@@ -76,13 +76,24 @@ require(["jquery", "marked", "mustache", "text!highscoreTemplate.html", "highcha
 					function(response) {
 						var element = $("#highscore");
 						var filteredNames = ["scripteddemocracy", "wahlversprechen2013", "sebastian_wahlversprechen", "wanja_seifert", "wanjaseifert"];
+						
+						var commenters = response.response.filter(function(user) {
+							return filteredNames.indexOf(user.username)===-1;
+						});
+
 						$(mustache.render(
 							highscoreTemplate, 
 							{
-								commenters: response.response.filter(function(user) {
-									return filteredNames.indexOf(user.username)===-1;
+								commenters: commenters.map(function(c, i) {
+									if(i < 10) {
+										c.glyph = "<sup><span class='glyphicon glyphicon-star' style='color: gold'/></sup>";
+									} else if(i < 20) {
+										c.glyph = "<sup><span class='glyphicon glyphicon-star' style='color: silver'/></sup>";
+									}
+									return c;
 								})
-						})).appendTo(element);
+							}
+						)).appendTo(element);
 					});
 			}
 

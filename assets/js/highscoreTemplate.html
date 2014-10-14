@@ -1,4 +1,11 @@
+<table style="margin-left: auto; margin-right: auto; ">
 {{#commenters}}
-<b>{{username}} -- {{name}} -- {{profileUrl}}</b><br/>
-<img src="avatar.small.cache">
+<tr>
+<td class="numposts"><a href="{{profileUrl}}" title="Zeige alle {{numPosts}} Kommentare" style="text-decoration: none">{{numPosts}}</a>{{{glyph}}}</td>
+<td class="username">
+	<img src="{{avatar.small.permalink}}" height="46px" width="46px" alt="Avatar">&nbsp;
+	<a href="{{profileUrl}}" title="Zeige alle {{numPosts}} Kommentare">{{name}}</a>
+</td>
+</tr>
 {{/commenters}}
+</table>
