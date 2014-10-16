@@ -9,22 +9,7 @@ require.config({
     }
 });
 
-require(["jquery", "marked", "mustache", "text!highscoreTemplate.html", "highcharts"], function($, marked, mustache, highscoreTemplate) {
-/*
-	function layout() {
-		console.log( "window: " + $( window ).width() + " x " + $( window ).height());
-		$('#intro').css(
-			'min-height',
-			$(window).height()
-		);
-		$('#filler').height(
-			Math.max(0,	$(window).height() - $('#chart').height())
-		);
-	}
-	$(document).ready(layout);
-	$(window).resize(layout);
-*/
-
+require(["jquery", "marked", "highcharts"], function($, marked) {
 	var deferredStmts = $.ajax({url: 'http://www.wahlversprechen2013.de/json/items/Koalitionsvertrag'});
 	var deferredCategories = $.ajax({url: 'http://www.wahlversprechen2013.de/json/categories'});
 	$.when(deferredStmts, deferredCategories).done(
@@ -73,7 +58,7 @@ require(["jquery", "marked", "mustache", "text!highscoreTemplate.html", "highcha
 
 			function renderHighscorePage(commenters, page, elementsPerPage, element) {
 				var begin = (page-1) * elementsPerPage;
-				var end = page * elementsPerPage;
+				var end = page * elementsPerPage;				
 				var commentersPage = commenters.slice(begin, end).map(
 					function(c, i) {
 						if(begin + i < 10) {
@@ -86,20 +71,42 @@ require(["jquery", "marked", "mustache", "text!highscoreTemplate.html", "highcha
 
 				element.children().remove();
 
-				$(mustache.render(
-					highscoreTemplate, 
-					{
-						commenters_1: commentersPage.slice(0, elementsPerPage/2),
-						commenters_2: commentersPage.slice(elementsPerPage/2)
-					}
-				)).appendTo(element);
+				var elementsPerColumn = elementsPerPage/2;
+
+				var div = $("<div style='display: inline-block; margin-left: auto; margin-right:auto'>").appendTo(element);
+
+				for(var rightTable = 0; rightTable <= 1; rightTable++) {				
+					var table = $("<table style='float: left'>").appendTo(div);
+
+					for(var row = 0; row < elementsPerColumn; row++) {
+						var i = rightTable * elementsPerColumn + row;
+						if(i < commentersPage.length) {
+							var c = commentersPage[i];
+							var title = "Zeige alle "+c.numPosts+" Kommentare";
+							$("<tr>"+
+							"<td class='numposts'><a href="+ c.profileUrl +" title='"+title+"'' style='text-decoration: none'>"+
+							c.numPosts+"</a>"+c.glyph+"</td>"+
+							"<td class='username'>"+
+								"<img src="+c.avatar.small.permalink+" height='46px' width='46px' alt='Avatar'>&nbsp;"+
+								"<a href="+c.profileUrl+" title='"+title+"''>"+c.name+"</a>"+
+							"</td>"+
+							"</tr>").appendTo(table);
+						} else {
+							$("<tr>"+
+							"<td class='numposts'>&nbsp;</td>"+
+							"<td class='username'>"+
+								"<div height='46px' width='46px'>&nbsp;</div>"+
+							"</td>"+
+							"</tr>").appendTo(table);
+						}
+					}					
+				}
 			}
 
 			function setupHighscoreList() {
 				$.ajax({url: 'http://www.wahlversprechen2013.de/json/mostActiveCommenters', dataType: "json"}).done( 
 					function(response) {
-						var filteredNames = [];
-						// var filteredNames = ["scripteddemocracy", "wahlversprechen2013", "sebastian_wahlversprechen", "wanja_seifert", "wanjaseifert"];
+						var filteredNames = ["scripteddemocracy", "wahlversprechen2013", "sebastian_wahlversprechen", "wanja_seifert", "wanjaseifert"];
 						
 						var commenters = response.response.filter(function(user) {
 							return filteredNames.indexOf(user.username)===-1;
