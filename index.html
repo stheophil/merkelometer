@@ -91,14 +91,18 @@
             display: none;
         }
 
+        td.numposts, td.username {
+            padding: 0.5em;
+        }
+
         .numposts {
             text-align:center;
             font-size: 2em;
             font-weight:bold;
         }
 
-        td.numposts, td.username {
-            padding: 0.5em;
+        td.username {
+            text-align: left;
         }
     </style>
 </head>
@@ -203,7 +207,11 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAKElEQVQIW2
             </div> 
             </div>
             <div class="col-sm-9">
-                <div id="highscore" style="max-height: 500px; overflow-y: scroll"></div>
+                <div id="highscore" style="text-align: center;"></div>
+                <div style="text-align: center;">
+                <ul class="pagination" id="highscore_pages">
+                </ul>
+                </div>
             </div>
         </div>
 

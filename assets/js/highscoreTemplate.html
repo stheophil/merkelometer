@@ -1,5 +1,6 @@
-<table style="margin-left: auto; margin-right: auto; ">
-{{#commenters}}
+<div style="display: inline-block; margin-left: auto; margin-right:auto">
+<table style="float: left">
+{{#commenters_1}}
 <tr>
 <td class="numposts"><a href="{{profileUrl}}" title="Zeige alle {{numPosts}} Kommentare" style="text-decoration: none">{{numPosts}}</a>{{{glyph}}}</td>
 <td class="username">
@@ -7,5 +8,18 @@
 	<a href="{{profileUrl}}" title="Zeige alle {{numPosts}} Kommentare">{{name}}</a>
 </td>
 </tr>
-{{/commenters}}
+{{/commenters_1}}
 </table>
+
+<table style="float: left">
+{{#commenters_2}}
+<tr>
+<td class="numposts"><a href="{{profileUrl}}" title="Zeige alle {{numPosts}} Kommentare" style="text-decoration: none">{{numPosts}}</a>{{{glyph}}}</td>
+<td class="username">
+	<img src="{{avatar.small.permalink}}" height="46px" width="46px" alt="Avatar">&nbsp;
+	<a href="{{profileUrl}}" title="Zeige alle {{numPosts}} Kommentare">{{name}}</a>
+</td>
+</tr>
+{{/commenters_2}}
+</table>
+</div>

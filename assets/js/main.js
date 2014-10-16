@@ -71,29 +71,94 @@ require(["jquery", "marked", "mustache", "text!highscoreTemplate.html", "highcha
 				}
 			}
 
+			function renderHighscorePage(commenters, page, elementsPerPage, element) {
+				var begin = (page-1) * elementsPerPage;
+				var end = page * elementsPerPage;
+				var commentersPage = commenters.slice(begin, end).map(
+					function(c, i) {
+						if(begin + i < 10) {
+							c.glyph = "<sup><span class='glyphicon glyphicon-star' style='color: gold'/></sup>";
+						} else if(begin + i < 20) {
+							c.glyph = "<sup><span class='glyphicon glyphicon-star' style='color: silver'/></sup>";
+						}
+						return c;
+					});
+
+				element.children().remove();
+
+				$(mustache.render(
+					highscoreTemplate, 
+					{
+						commenters_1: commentersPage.slice(0, elementsPerPage/2),
+						commenters_2: commentersPage.slice(elementsPerPage/2)
+					}
+				)).appendTo(element);
+			}
+
 			function setupHighscoreList() {
-				$.ajax({url: 'https://api.myjson.com/bins/4g8e1'}).done( 
+				$.ajax({url: 'http://www.wahlversprechen2013.de/json/mostActiveCommenters', dataType: "json"}).done( 
 					function(response) {
-						var element = $("#highscore");
-						var filteredNames = ["scripteddemocracy", "wahlversprechen2013", "sebastian_wahlversprechen", "wanja_seifert", "wanjaseifert"];
+						var filteredNames = [];
+						// var filteredNames = ["scripteddemocracy", "wahlversprechen2013", "sebastian_wahlversprechen", "wanja_seifert", "wanjaseifert"];
 						
 						var commenters = response.response.filter(function(user) {
 							return filteredNames.indexOf(user.username)===-1;
 						});
 
-						$(mustache.render(
-							highscoreTemplate, 
-							{
-								commenters: commenters.map(function(c, i) {
-									if(i < 10) {
-										c.glyph = "<sup><span class='glyphicon glyphicon-star' style='color: gold'/></sup>";
-									} else if(i < 20) {
-										c.glyph = "<sup><span class='glyphicon glyphicon-star' style='color: silver'/></sup>";
+						var highscore = $("#highscore");
+						var elementsPerPage = 10;
+						var pages = Math.ceil(commenters.length / elementsPerPage);
+						var elementPages = $("#highscore_pages");
+
+						if(1<pages) {
+	                  		var prevLink = $("<li><a href='#' data-target='prev'>&laquo;</a></li>").appendTo(elementPages);
+	                  		for(var i = 0; i < pages; i++) {
+	                  			$("<li><a href='#' data-target='"+(i+1)+"'>"+(i+1)+"</a></li>").appendTo(elementPages);
+	                  		}
+	                  		var nextLink = $("<li><a href='#' data-target='next'>&raquo;</a></li>").appendTo(elementPages);	
+
+	                  		elementPages.find("a").click( function(evt) {
+								evt.preventDefault();
+	                  			var a = $(evt.target);
+	                  			if(a.parent().hasClass("disabled")) return;
+
+								var target = a.data("target");
+
+								var active = elementPages.find(".active");
+
+								if(target==="prev" || target==="next") {
+									var activeTarget = active.children("a").data("target");
+									if(target==="prev") {
+										activeTarget--;
+									} else {
+										activeTarget++;
 									}
-									return c;
-								})
-							}
-						)).appendTo(element);
+									target = activeTarget;
+									a = elementPages.find("[data-target="+activeTarget+"]");
+								}
+
+								if(target===1) {
+									prevLink.addClass("disabled");
+								} else {
+									prevLink.removeClass("disabled");
+								}
+
+								if(target===pages) {
+									nextLink.addClass("disabled");
+								} else {
+									nextLink.removeClass("disabled");
+								}
+
+								active.removeClass("active");
+								a.parent().addClass("active");
+								renderHighscorePage(commenters, target, elementsPerPage, highscore);
+
+							});
+							elementPages.find("[data-target=1]").trigger("click");
+
+						} else {							
+							renderHighscorePage(commenters, 1, elementsPerPage, highscore);
+						}
 					});
 			}
 
