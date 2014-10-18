@@ -51,6 +51,15 @@
 	        color: #1c4d81;
         }
 
+        p.rating {
+            margin-top: 1em;
+            font-size: 1.25em;
+        }
+
+        p.rating span span {
+            font-weight: bold;
+        }
+
         a {
             text-decoration: underline;
         }
@@ -71,6 +80,10 @@
 	        
 	        color: rgba(13,148,193,1);
             margin-top: 5em;
+        }
+
+        .hint #reload {
+            padding: 0;
         }
         .number {
 	        background-color: rgba(13,148,193,1);
@@ -139,7 +152,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAKElEQVQIW2
             <div class="col-sm-3">
             <div class="hint">
             	<div class="number">1</div>
-            	Hier ist ein zufälliges Wahlversprechen. Wenn Du ein anderes recherchieren willst, klicke den <span class="glyphicon glyphicon-refresh"></span>&nbsp;Button.
+            	Hier ist ein zufälliges Wahlversprechen. Wenn Du ein anderes recherchieren willst, klicke den <a class="btn btn-link" href="#" id="reload" role="button"><span class="glyphicon glyphicon-refresh"></span></a>&nbsp;Button.
             </div>
             </div>
             <div class="col-sm-9">
@@ -156,6 +169,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAKElEQVQIW2
                         <p class="pull-right"><a class="btn btn-link" href="#" id="reload" role="button"><span class="glyphicon glyphicon-refresh"></span></a>
                     </footer>
                 </blockquote>
+                <p class="rating">Unsere aktuelle Bewertung:&nbsp;<span id="rating"></span></p>
             </div>
 
             <br style="clear: both;">

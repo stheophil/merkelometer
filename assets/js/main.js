@@ -17,16 +17,36 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 			var stmts = stmtsResult[0];
 			var categories = categoriesResult[0];
 
+			var ratings = [
+				{ value: "PromiseKept", id: 0, name: "Gehalten", glyph: "glyphicon-thumbs-up", color: "#5cb85c" },
+				{ value: "Compromise", id: 1, name: "Kompromiss", glyph: "glyphicon-adjust", color: "#f0ad4e"  }, 
+				{ value: "PromiseBroken", id: 2, name: "Gebrochen", glyph: "glyphicon-thumbs-down", color: "#d9534f" }, 
+				{ value: "Stalled", id: 3, name: "Blockiert", glyph: "glyphicon-time", color: "#d9984f"  },
+				{ value: "InTheWorks", id: 4, name: "In Arbeit", glyph: "glyphicon-cog", color: "#5bc0de"  },
+				{ value: "Unrated", id: 5, name: "Unbewertet", glyph: "glyphicon-question-sign", color: "#aaaaaa"  }
+			];
+			var idxUndefined = "Unrated";
+
 		    function display(index) {
 		    	var stmt = stmts[index];
 				console.log("Display quote " + stmt);
 				var title = $('#entry-title');
 				var quote = $('#entry-quote');
 				var quote_src = $('#entry-source');
+				var rating = $('#rating');
 
 				title.text(stmt.title);
 				quote.html(marked(stmt.quote));
 				quote_src.html(marked(stmt.quote_src));
+
+				var ratingValue = (stmt.ratings.length===0 ? idxUndefined : stmt.ratings[stmt.ratings.length-1].rating);
+				var i = ratings.map(function(r) { return r.value; }).indexOf(ratingValue);
+				if(i!==-1) {
+					rating.html("<span style='color: "+ratings[i].color+"'>"+
+						"<span class='glyphicon "+ratings[i].glyph+"'></span>&nbsp;"+
+						ratings[i].name+
+						"</span>");
+				}
 
 	            DISQUS.reset({
 	                reload: true,
@@ -217,16 +237,6 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 			}
 
 			function setupCharts() {
-				var ratings = [
-					{ value: "PromiseKept", id: 0, name: "Gehalten", glyph: "glyphicon-thumbs-up", color: "#5cb85c" },
-					{ value: "Compromise", id: 1, name: "Kompromiss", glyph: "glyphicon-adjust", color: "#f0ad4e"  }, 
-					{ value: "PromiseBroken", id: 2, name: "Gebrochen", glyph: "glyphicon-thumbs-down", color: "#d9534f" }, 
-					{ value: "Stalled", id: 3, name: "Blockiert", glyph: "glyphicon-time", color: "#d9984f"  },
-					{ value: "InTheWorks", id: 4, name: "In Arbeit", glyph: "glyphicon-cog", color: "#5bc0de"  },
-					{ value: "Unrated", id: 5, name: "Unbewertet", glyph: "glyphicon-question-sign", color: "#aaaaaa"  }
-				];
-				var idxUndefined = "Unrated";
-
 				var ratingZero = {};
 				ratings.forEach(function(r) {
 					ratingZero[r.value] = 0;
