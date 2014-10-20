@@ -35,7 +35,7 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 				var quote_src = $('#entry-source');
 				var rating = $('#rating');
 
-				title.text(stmt.title);
+				title.html("<a href='http://www.wahlversprechen2013.de/item/"+stmt.id+"' target=_blank>"+stmt.title+"</a>");
 				quote.html(marked(stmt.quote));
 				quote_src.html(marked(stmt.quote_src));
 
@@ -47,6 +47,8 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 						ratings[i].name+
 						"</span>");
 				}
+
+				$('#category').html(stmt.category);
 
 	            DISQUS.reset({
 	                reload: true,
@@ -192,15 +194,15 @@ require(["jquery", "marked", "highcharts"], function($, marked) {
 			function setupButtonHandler() {
 				$('a[href^=#]').on('click', function(e){
 				    var href = $(this).attr('href');
-				    if(href!="#") {		    	
+				    if(href!="#") {
 					    $('html, body').animate({
 					        scrollTop:$(href).offset().top
 					    },'slow');
-					    e.preventDefault();	
 				    }
+					e.preventDefault();
 				});
 
-				$('#reload').on('click', function(e){
+				$('a.reload').on('click', function(e){
 				    reload();
 				    e.preventDefault();
 				});

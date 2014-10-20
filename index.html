@@ -33,6 +33,11 @@
             padding-top: 40px;
         }
 
+        .footer a {
+             color: white; 
+             text-decoration: underline;
+        }
+
         .top div {
             vertical-align: middle; 
             display: inline-block;
@@ -47,6 +52,9 @@
         h1, h2.entry-title {
 	        color: rgba(13,148,193,1);	        
         }
+        .entry-title a {
+            text-decoration: none;
+        }
         blockquote footer {
 	        color: #1c4d81;
         }
@@ -54,6 +62,11 @@
         p.rating {
             margin-top: 1em;
             font-size: 1.25em;
+        }
+
+        p.rating small {
+            font-size: 0.75em;
+            color: #888;
         }
 
         p.rating span span {
@@ -82,7 +95,7 @@
             margin-top: 5em;
         }
 
-        .hint #reload {
+        .hint .reload {
             padding: 0;
         }
         .number {
@@ -159,7 +172,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAKElEQVQIW2
             <div class="col-sm-3">
             <div class="hint">
             	<div class="number">1</div>
-            	Hier ist ein zufälliges Wahlversprechen. Wenn Du ein anderes recherchieren willst, klicke den <a class="btn btn-link" href="#" id="reload" role="button"><span class="glyphicon glyphicon-refresh"></span></a>&nbsp;Button.
+            	Hier ist ein zufälliges Wahlversprechen. Wenn Du ein anderes recherchieren willst, klicke den <a class="btn btn-link reload" href="#" role="button"><span class="glyphicon glyphicon-refresh"></span></a>&nbsp;Button.
             </div>
             </div>
             <div class="col-sm-9">
@@ -173,10 +186,15 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAKElEQVQIW2
                         <span>
                             <cite id="entry-source"></cite>
                         </span>
-                        <p class="pull-right"><a class="btn btn-link" href="#" id="reload" role="button"><span class="glyphicon glyphicon-refresh"></span></a>
+                        <p class="pull-right"><a class="btn btn-link reload" href="#" role="button"><span class="glyphicon glyphicon-refresh"></span></a>
                     </footer>
                 </blockquote>
-                <p class="rating">Unsere aktuelle Bewertung:&nbsp;<span id="rating"></span></p>
+                <p class="rating pull-left"><small>Aktuelle Bewertung:</small><br/>
+                <span id="rating"></span>
+                </p>
+                <p class="rating pull-right"><small>Ressort</small><br/>
+                <span id="category"></span>
+                </p>
             </div>
 
             <br style="clear: both;">
@@ -262,7 +280,8 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAKElEQVQIW2
 
     <div class="footer">
         <footer>
-            <p>Ein <a href="http://www.wahlversprechen2013.de" style="color: white; text-decoration: underline;">wahlversprechen2013.de</a> Projekt.</p>
+            <p>Ein <a href="http://www.wahlversprechen2013.de">wahlversprechen2013.de</a> Projekt von <a href="http://theophil.net">Sebastian Theophil</a> &nbsp;&middot;&nbsp; <a href="https://github.com/stheophil/merkelometer">Github</a> &nbsp;&middot;&nbsp; <a href="http://blog.wahlversprechen2013.de/impressum">Impressum</a></p>
+
         </footer>
     </div>
     <!-- /container -->
