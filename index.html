@@ -137,6 +137,13 @@
                 height: 71px;
             }
         }
+
+        .social-media {
+            display: block;
+        }
+        .social-media iframe {
+            vertical-align: bottom;
+        }
     </style>
 </head>
 
@@ -148,7 +155,22 @@
         </div>
         <div style="padding: 1em;">
             Gemeinsam der Regierung auf die Finger geschaut<br/>
-            <small>Ein <a href="http://www.wahlversprechen2013.de" style="color: white; text-decoration: underline;">wahlversprechen2013.de</a> Projekt.</small>
+            <small>Ein <a href="http://www.wahlversprechen2013.de" style="color: white; text-decoration: underline;">wahlversprechen2013.de</a> Projekt.
+            <div class="social-media">
+            <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>&nbsp;<div class="fb-like" data-href="http://www.merkelometer.de" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+            </div>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.0";
+              fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+
+            </small>
         </div>
     </div>
     <div style="padding-top: 70px; background:url(
