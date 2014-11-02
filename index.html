@@ -145,6 +145,28 @@
             vertical-align: bottom;
         }
     </style>
+     <script type="text/javascript"> <!--
+    function UnCryptMailto( s )
+    {
+        var n = 0;
+        var r = "";
+        for( var i = 0; i < s.length; i++)
+        {
+            n = s.charCodeAt( i );
+            if( n >= 8364 )
+            {
+                n = 128;
+            }
+            r += String.fromCharCode( n - 1 );
+        }
+        return r;
+    }
+
+    function linkTo_UnCryptMailto( s )
+    {
+        location.href=UnCryptMailto( s );
+    }
+    // --> </script>
 </head>
 
 <body>
@@ -296,6 +318,14 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAKElEQVQIW2
                 <div class="tab" id="ressort" style="width: 100%; height: 600px">Ressort</div>
                 <div class="tab" id="zeit" style="width: 100%; height: 600px">Zeit</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+
+            <div class="col-sm-9">
+            <p class="lead">Wir verfolgen die Umsetzung aller Vorhaben aus dem Koalitionsvertrag und aller Wahlversprechen der Regierungsparteien auf <a href="http://www.wahlversprechen2013.de">wahlversprechen2013.de</a>. Möchtest Du uns dabei unterstützen? Möchtest Du vielleicht dauerhaft bei unserem Projekt mitmachen? <a href="http://blog.wahlversprechen2013.de/post/99895640654/herzlich-willkommen#mitmachen">Wir haben auf unserem Blog aufgeschrieben, wie Du bei uns mitmachen kannst</a> oder schreib uns einfach eine Mail an <a href="javascript:linkTo_UnCryptMailto('nbjmup;nbjmAxbimwfstqsfdifo3124/ef');">mail [at] wahlversprechen2013 [dot] de</a>.</p>
             </div>
         </div>
     </div>
